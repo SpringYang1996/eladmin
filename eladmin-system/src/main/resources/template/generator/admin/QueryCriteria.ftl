@@ -4,11 +4,9 @@ import lombok.Data;
 <#if hasTimestamp>
 import java.sql.Timestamp;
 </#if>
+import me.zhengjie.tool.QueryCondition;
 <#if hasBigDecimal>
 import java.math.BigDecimal;
-</#if>
-<#if queryColumns??>
-import me.zhengjie.annotation.Query;
 </#if>
 
 /**
@@ -16,17 +14,16 @@ import me.zhengjie.annotation.Query;
 * @date ${date}
 */
 @Data
-public class ${className}QueryCriteria{
+public class ${className}QueryCriteria extends ${className}DTO{
 <#if queryColumns??>
     <#list queryColumns as column>
-
     <#if column.columnQuery = '1'>
     // 模糊
-    @Query(type = Query.Type.INNER_LIKE)
+    @QueryCondition(condition=QueryCondition.Condition.LIKE)
     </#if>
     <#if column.columnQuery = '2'>
     // 精确
-    @Query
+    @QueryCondition(condition=QueryCondition.Condition.EQ)
     </#if>
     private ${column.columnType} ${column.changeColumnName};
     </#list>

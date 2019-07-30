@@ -1,9 +1,13 @@
 package ${package}.domain;
 
 import lombok.Data;
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
-import javax.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 <#if hasTimestamp>
 import java.sql.Timestamp;
 </#if>
@@ -16,10 +20,11 @@ import java.io.Serializable;
 * @author ${author}
 * @date ${date}
 */
-@Entity
+
 @Data
-@Table(name="${tableName}")
-public class ${className} implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+public class ${className} extends Model<${className}>  implements Serializable {
 <#if columns??>
     <#list columns as column>
 
@@ -27,17 +32,19 @@ public class ${className} implements Serializable {
     // ${column.columnComment}
     </#if>
     <#if column.columnKey = 'PRI'>
-    @Id
     <#if auto>
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+<#--    @GeneratedValue(strategy = GenerationType.IDENTITY)-->
+    @TableId(value = "${column.columnComment}", type = IdType.AUTO)
     </#if>
     </#if>
-    @Column(name = "${column.columnName}"<#if column.columnKey = 'UNI'>,unique = true</#if><#if column.isNullable = 'NO' && column.columnKey != 'PRI'>,nullable = false</#if>)
+<#--    @Column(name = "${column.columnName}"<#if column.columnKey = 'UNI'>,unique = true</#if><#if column.isNullable = 'NO' && column.columnKey != 'PRI'>,nullable = false</#if>)-->
     private ${column.columnType} ${column.changeColumnName};
     </#list>
+
+
 </#if>
 
-    public void copy(${className} source){
-        BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));
-    }
+<#--    public void copy(${className} source){-->
+<#--        BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));-->
+<#--    }-->
 }

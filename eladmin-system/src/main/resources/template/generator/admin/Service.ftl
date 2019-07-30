@@ -1,36 +1,31 @@
 package ${package}.service;
 
 import ${package}.domain.${className};
-import ${package}.service.dto.${className}DTO;
 import ${package}.service.dto.${className}QueryCriteria;
-//import org.springframework.cache.annotation.CacheConfig;
-//import org.springframework.cache.annotation.CacheEvict;
-//import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Pageable;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
 * @author ${author}
 * @date ${date}
 */
 //@CacheConfig(cacheNames = "${changeClassName}")
-public interface ${className}Service {
+public interface ${className}Service extends IService<${className}>{
 
     /**
     * queryAll 分页
-    * @param criteria
-    * @param pageable
-    * @return
     */
     //@Cacheable(keyGenerator = "keyGenerator")
-    Object queryAll(${className}QueryCriteria criteria, Pageable pageable);
+    IPage<${className}> queryAll(${className}QueryCriteria criteria, IPage<${className}> page);
+
 
     /**
     * queryAll 不分页
-    * @param criteria
-    * @return
     */
     //@Cacheable(keyGenerator = "keyGenerator")
-    public Object queryAll(${className}QueryCriteria criteria);
+    public List<${className}> queryAll(${className}QueryCriteria criteria);
 
     /**
      * findById
@@ -38,7 +33,7 @@ public interface ${className}Service {
      * @return
      */
     //@Cacheable(key = "#p0")
-    ${className}DTO findById(${pkColumnType} ${pkChangeColName});
+    ${className} findById(${pkColumnType} ${pkChangeColName});
 
     /**
      * create
@@ -46,7 +41,7 @@ public interface ${className}Service {
      * @return
      */
     //@CacheEvict(allEntries = true)
-    ${className}DTO create(${className} resources);
+    ${className} create(${className} resources);
 
     /**
      * update
